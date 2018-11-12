@@ -28,6 +28,15 @@ public class Questions implements Serializable {
     private String alternative2;
     private String alternative3;
     private String correctAnswer;
+    private String category;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
     
     public Questions(){
         

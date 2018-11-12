@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.QueryParam;
 
@@ -37,7 +38,37 @@ public class QuizManager {
         return em.createQuery("SELECT c FROM Category c").getResultList();
     } 
     
+    @GET
+    @Path("getQuestions")
+    @RolesAllowed({Group.USER})
+    public List<Questions> getquestions(@QueryParam("category") String category){
+        return em.createQuery("SELECT q FROM Questions q WHERE q.category = :category")
+                .setParameter("category", category)
+                .getResultList();
+    }
     
+    @POST
+    @Path("addQuestion")
+    public Questions createQuestion(Questions questions){
+        Questions result = new Questions();
+        result.setQuestion(questions.getQuestion());
+        result.setAlternative1(questions.getAlternative1());
+        result.setAlternative2(questions.getAlternative2());
+        result.setAlternative3(questions.getAlternative3());
+        result.setCorrectAnswer(questions.getCorrectAnswer());
+        result.setCategory(questions.getCategory());
+        em.persist(result);
+        return result;
+    }
+    
+    @POST
+    @Path("addCategory")
+    public Category createCategory(Category category){
+        Category result = new Category();
+        result.setCategoryName(category.getCategoryName());
+        em.persist(result);
+        return result;
+    }
     
     
     
