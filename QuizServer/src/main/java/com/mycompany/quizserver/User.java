@@ -6,54 +6,103 @@
 package com.mycompany.quizserver;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
+import static com.mycompany.quizserver.User.FIND_ALL_USERS;
+import static com.mycompany.quizserver.User.FIND_USER_BY_IDS;
+import javax.persistence.NamedQueries;
 
 /**
  *
  * @author erikfossum
  */
-@Entity
+@Entity @Table(name = "USERNAME")
+@NamedQueries({
+@NamedQuery(name = FIND_USER_BY_IDS, query = "select u from User u where u.userId in :ids")})
 public class User implements Serializable {
+    public static final String FIND_USER_BY_IDS = "User.findUserByIds";
+    public static final String FIND_ALL_USERS = "User.findAllUsers";
 
-    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private String userId;
+    
+    @JsonbTransient
+    String password;
+    
+    @JsonbTransient
+    @ManyToMany(mappedBy = "users")
+    Set<Group> groups;
+    
+    public enum State {
+        ACTIVE, INACTIVE
+    }
+    @Enumerated(EnumType.STRING)
+    State currentState = State.ACTIVE;
 
-    public Long getId() {
-        return id;
+    public User(String userId) {
+        this.userId = userId;
+    }
+    
+    public User(){
+        
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getUserId() {
+        return userId;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
-        return hash;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof User)) {
-            return false;
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public User(String userId, String password) {
+        this.userId = userId;
+        this.password = password;
+    }
+    
+    public String getuserId() {
+        return userId;
+    }
+
+    public void setuserId(String userId) {
+        this.userId = userId;
+    }
+    
+       public void addGroup(Group group) {
+        getGroups().add(group);
+        group.getUsers().add(this);
+    }
+
+    public Set<Group> getGroups() {
+        if(groups == null) {
+            groups = new HashSet<>();
         }
-        User other = (User) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
-            return false;
-        }
-        return true;
+        return groups;
     }
+
 
     @Override
     public String toString() {
-        return "com.mycompany.quizserver.User[ id=" + id + " ]";
+        return "com.mycompany.quizserver.User[ id=" + userId + " ]";
     }
     
 }
