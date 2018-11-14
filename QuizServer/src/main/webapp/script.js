@@ -4,13 +4,15 @@
  * and open the template in the editor.
  */
 
+/*
 var question;
 var alternative1;
 var alternative2;
 var alternative3;
+var alternative4;
 var correctAnswer;
 var category;
-
+*/
 
 
 
@@ -28,14 +30,15 @@ function addQuestion() {
     var alternative1 = document.getElementById("alternative1").value;
     var alternative2 = document.getElementById("alternative2").value;
     var alternative3 = document.getElementById("alternative3").value;
+    var alternative4 = document.getElementById("alternative4").value;
     var correctAnswer = document.getElementById("correctAnswer").value;
     var categoryQuestion = document.getElementById("categoryQuestion").value;
-    
     xhttp.send(JSON.stringify({
         question: question,
         alternative1: alternative1,
         alternative2: alternative2,
         alternative3: alternative3,
+        alternative4: alternative4,
         correctAnswer: correctAnswer,
         category: categoryQuestion
     }));

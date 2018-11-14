@@ -27,6 +27,7 @@ public class Questions implements Serializable {
     private String alternative1;
     private String alternative2;
     private String alternative3;
+    private String alternative4;
     private String correctAnswer;
     private String category;
 
@@ -72,6 +73,14 @@ public class Questions implements Serializable {
 
     public void setAlternative3(String alternative3) {
         this.alternative3 = alternative3;
+    }
+
+    public String getAlternative4() {
+        return alternative4;
+    }
+
+    public void setAlternative4(String alternative4) {
+        this.alternative4 = alternative4;
     }
 
     public String getCorrectAnswer() {

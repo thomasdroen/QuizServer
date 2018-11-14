@@ -39,7 +39,6 @@ public class QuizManager {
     
     @GET
     @Path("getQuestions")
-    @RolesAllowed({Group.USER})
     public List<Questions> getquestions(@QueryParam("category") String category){
         return em.createQuery("SELECT q FROM Questions q WHERE q.category = :category")
                 .setParameter("category", category)
@@ -54,6 +53,7 @@ public class QuizManager {
         result.setAlternative1(questions.getAlternative1());
         result.setAlternative2(questions.getAlternative2());
         result.setAlternative3(questions.getAlternative3());
+        result.setAlternative4(questions.getAlternative4());
         result.setCorrectAnswer(questions.getCorrectAnswer());
         result.setCategory(questions.getCategory());
         em.persist(result);
