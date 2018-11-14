@@ -166,7 +166,7 @@ public class AuthService {
      * Does an insert into the CHATUSER and CHATUSERGROUP tables. It creates
      * a hash of the password before the user is stored in the database. 
      * The authentication system will read the CHATUSER table when doing an 
-     * authentication.
+     * authentication.//
      * 
      * @param uid
      * @param pwd

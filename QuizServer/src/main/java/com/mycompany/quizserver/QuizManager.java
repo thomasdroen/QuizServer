@@ -33,7 +33,6 @@ public class QuizManager {
     
     @GET
     @Path("getCategories")
-    @RolesAllowed({Group.USER})
     public List<Category> getConversations(){
         return em.createQuery("SELECT c FROM Category c").getResultList();
     } 
