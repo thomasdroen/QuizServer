@@ -33,11 +33,13 @@ public class QuizManager {
     
     @GET
     @Path("getCategories")
+    @RolesAllowed({Group.ADMIN,Group.USER})
     public List<Category> getConversations(){
         return em.createQuery("SELECT c FROM Category c").getResultList();
     } 
     
     @GET
+    @RolesAllowed({Group.ADMIN,Group.USER})
     @Path("getQuestions")
     public List<Questions> getquestions(@QueryParam("category") String category){
         return em.createQuery("SELECT q FROM Questions q WHERE q.category = :category")
@@ -45,8 +47,21 @@ public class QuizManager {
                 .getResultList();
     }
     
+    @GET
+    @Path("getHighscore")
+    @RolesAllowed({Group.ADMIN,Group.USER})
+    public List<Highscore> getHighscores(@QueryParam("username") String username,
+            @QueryParam("category") String category){
+        return em.createQuery("SELECT h FROM Highscore h WHERE h.username = :username "
+                + "AND h.category = :category")
+                .setParameter("username", username)
+                .setParameter("category", category)
+                .getResultList();
+    } 
+    
     @POST
     @Path("addQuestion")
+    @RolesAllowed({Group.ADMIN,Group.USER})
     public Questions createQuestion(Questions questions){
         Questions result = new Questions();
         result.setQuestion(questions.getQuestion());
@@ -62,9 +77,22 @@ public class QuizManager {
     
     @POST
     @Path("addCategory")
+    @RolesAllowed({Group.ADMIN,Group.USER})
     public Category createCategory(Category category){
         Category result = new Category();
         result.setCategoryName(category.getCategoryName());
+        em.persist(result);
+        return result;
+    }
+    
+    @POST
+    @Path("addHighscore")
+    @RolesAllowed({Group.ADMIN,Group.USER})
+    public Highscore createHighscore(Highscore highscore){
+        Highscore result = new Highscore();
+        result.setHighscore(highscore.getHighscore());
+        result.setUsername(highscore.getUsername());
+        result.setCategory(highscore.getCategory());
         em.persist(result);
         return result;
     }

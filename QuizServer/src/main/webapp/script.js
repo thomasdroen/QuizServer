@@ -61,3 +61,24 @@ function addCategory() {
         categoryName: category
     }));
 }
+
+function addHighscore() {
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "http://localhost:8080/QuizServer/api/quiz/addHighscore", true);
+    xhttp.setRequestHeader("content-type", "application/json");
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            console.log("send score ok");
+        }
+    };
+   
+    var score = document.getElementById("highscore").value;
+    var username = document.getElementById("username").value;
+    var category2 = document.getElementById("category2").value;
+    xhttp.send(JSON.stringify({
+        highscore: parseInt(score),
+        username : username,
+        category : category2
+    }));
+}
